@@ -21,17 +21,20 @@ class BarGUI(tk.Tk):
         left_frame = tk.Frame(self, bg="#f0f0f0")
         left_frame.pack(side=tk.LEFT, padx=20, pady=20)
 
-        title_label = tk.Label(left_frame, text="Controls", font=self.title_font, bg="#f0f0f0")
-        title_label.grid(row=0, column=0, columnspan=2, pady=10)
-
         # Slider
-        self.slider = tk.Scale(left_frame, from_=350, to=750, orient=tk.VERTICAL,
+        slider_label = tk.Label(left_frame, text="Slider", font=self.title_font, bg="#f0f0f0")
+        slider_label.grid(row=0, column=0, pady=10)
+
+        self.slider = tk.Scale(left_frame, from_=750, to=350, orient=tk.VERTICAL,
                                variable=self.slider_value, command=self.update_bars,
                                length=300, sliderlength=30, width=20, bg="#f0f0f0",
                                highlightbackground="#f0f0f0", troughcolor="#d3d3d3")
         self.slider.grid(row=1, column=0, rowspan=12, padx=10)
 
         # Checkboxes
+        checkboxes_label = tk.Label(left_frame, text="Checkboxes", font=self.title_font, bg="#f0f0f0")
+        checkboxes_label.grid(row=0, column=1, padx=10, pady=10)
+
         self.checkboxes = []
         for i in range(12):
             cb = tk.Checkbutton(left_frame, text=f"Checkbox {i + 1}", variable=self.checkbox_values[i],
@@ -68,19 +71,19 @@ class BarGUI(tk.Tk):
         canvas_height = self.canvas.winfo_height()
 
         # Calculate bar heights
-        left_bar_height = slider_value / 750 * canvas_height
-        right_bar_height = checkbox_sum / 750 * canvas_height
+        left_bar_height = (slider_value - 350) / (750 - 350) * (canvas_height - 30)  # Reserve space for labels
+        right_bar_height = checkbox_sum / 750 * (canvas_height - 30)  # Reserve space for labels
 
         # Update left bar
-        self.canvas.coords(self.left_bar, canvas_width // 4 - 25, canvas_height, canvas_width // 4 + 25,
-                           canvas_height - left_bar_height)
-        self.canvas.coords(self.left_bar_label, canvas_width // 4, canvas_height - left_bar_height - 10)
+        self.canvas.coords(self.left_bar, canvas_width // 4 - 25, canvas_height - 30 - left_bar_height,
+                           canvas_width // 4 + 25, canvas_height - 30)
+        self.canvas.coords(self.left_bar_label, canvas_width // 4, canvas_height - 15)
         self.canvas.itemconfig(self.left_bar_label, text=str(slider_value))
 
         # Update right bar
-        self.canvas.coords(self.right_bar, 3 * canvas_width // 4 - 25, canvas_height, 3 * canvas_width // 4 + 25,
-                           canvas_height - right_bar_height)
-        self.canvas.coords(self.right_bar_label, 3 * canvas_width // 4, canvas_height - right_bar_height - 10)
+        self.canvas.coords(self.right_bar, 3 * canvas_width // 4 - 25, canvas_height - 30 - right_bar_height,
+                           3 * canvas_width // 4 + 25, canvas_height - 30)
+        self.canvas.coords(self.right_bar_label, 3 * canvas_width // 4, canvas_height - 15)
         self.canvas.itemconfig(self.right_bar_label, text=str(checkbox_sum))
 
 
