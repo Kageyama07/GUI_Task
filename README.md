@@ -36,3 +36,7 @@ This Python GUI application consists of two main areas: a left area with interac
 
 - **Names:** 
   - The names of the GUI display, checkboxes, and bars can be customized directly within the source code.
+
+## Image
+
+<img src="https://github.com/Kageyama07/GUI_Task/blob/main/img/Bar_Length_Controller.PNG?raw=true" alt="Bar Length Controller" width="600">
